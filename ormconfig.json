@@ -1,0 +1,24 @@
+{
+   "type": "mysql",
+   "host": "localhost",
+   "port": 3338,
+   "username": "example",
+   "password": "example",
+   "database": "infoworldtest",
+   "synchronize": true,
+   "logging": false,
+   "entities": [
+      "orm/entity/**/*.ts"
+   ],
+   "migrations": [
+      "orm/migration/**/*.ts"
+   ],
+   "subscribers": [
+      "orm/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+   }
+}

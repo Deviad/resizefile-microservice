@@ -1,0 +1,35 @@
+default:
+  server:
+    port: 5005
+    secret: 'puthereyoursecret'
+  database:
+    db_name: 'ownzones'
+    db_host: 'localhost'
+    db_user: 'example'
+    db_pass: 'example'
+    db_type: 'mongodb'
+    db_port: 27017
+    db_logging: 'all'
+development:
+  server:
+    port: 5005
+  database:
+    db_name: 'ownzones'
+    db_host: 'localhost'
+    db_user: 'root'
+    db_pass: 'example'
+    db_type: 'mongodb'
+    db_port: 27017
+    db_logging: 'all'
+production:
+  server:
+    port: 5005
+  database:
+    db_name: 'ownzones'
+    db_host: 'localhost'
+    db_user: 'root'
+    db_pass: 'example'
+    db_type: 'mongodb'
+    db_port: 27017
+    db_logging: 'all'
+
