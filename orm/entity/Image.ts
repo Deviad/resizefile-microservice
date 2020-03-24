@@ -1,8 +1,8 @@
-import {Entity, PrimaryGeneratedColumn, Column, Index, OneToMany} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, ObjectIdColumn} from 'typeorm';
 
 @Entity('images')
 export class Image {
-  @PrimaryGeneratedColumn()
+  @ObjectIdColumn()
   public id: number;
 
   @Column({type: 'varchar', length: '100', nullable: false})

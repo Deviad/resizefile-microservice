@@ -16,15 +16,15 @@ class ExpertController {
   }
 
   public async save(endpoint: string): Promise<any> {
-    return this._app.route(endpoint).post((req: Request, res: Response) => {
+    return this._app.route(endpoint).post(async (req: Request, res: Response) => {
       try {
         const image = new Image();
         image.timestamp = new Date(Date.now()).toISOString();
         image.name = req.query.name + req.query.size;
-        this._db.em.save(image);
+        await this._db.em.save(image);
         res.status(201).json({'status': 'success'});
       } catch (error) {
-        throw new ApiError(500, error);
+       throw error;
       }
     });
   }

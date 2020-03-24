@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, OneToMany} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, OneToMany, ObjectIdColumn} from 'typeorm';
 import {IGenericEntity} from './IGenericEntity';
 
 export interface IImage extends IGenericEntity<IImage> {
@@ -13,7 +13,7 @@ export interface IImage extends IGenericEntity<IImage> {
 @Entity('images')
 export class Image extends BaseEntity implements IImage {
 
-  @PrimaryGeneratedColumn()
+  @ObjectIdColumn()
   public id: number;
 
 
