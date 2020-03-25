@@ -49,7 +49,6 @@ const cache = new Map<string, boolean>();
 
     results.forEach(x => cache.set(x.name, true));
 
-    console.log(results);
   }
 
   await connection.close();
