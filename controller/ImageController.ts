@@ -1,5 +1,4 @@
 import {Application, Request, Response} from 'express';
-import config from '../config';
 import {TypeORMCLient} from '../utils/sqldb/client';
 import {Image} from '../model';
 import {ApiError, wrapAsync} from '../error/Error';
@@ -7,8 +6,6 @@ import * as fs from 'fs';
 
 import * as sharp from 'sharp';
 import * as path from 'path';
-
-const {server: {port}, databaseURL, domain} = config;
 
 
 interface IExtendedRequest extends Request {
@@ -89,7 +86,8 @@ class ImageController {
         this._cache.set(req.query.name, true);
         res.status(201).json({'status': 'success'});
       } catch (error) {
-        throw new ApiError(500, error);
+        const code = error.statusCode || 500;
+        throw new ApiError(code, error);
       }
     }));
   }
@@ -110,7 +108,8 @@ class ImageController {
         this._cache.set(req.query.name + req.query.size, true);
         res.status(201).json({'status': 'success'});
       } catch (error) {
-        throw new ApiError(500, error);
+        const code = error.statusCode || 500;
+        throw new ApiError(code, error);
       }
     }));
   }

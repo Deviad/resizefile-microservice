@@ -11,7 +11,6 @@ import ImageRoute from './route/ImageRoute';
 import {TypeORMCLient} from './utils/sqldb/client';
 import {Image} from './model';
 import {MongoClient} from 'mongodb';
-import {handleError} from './error/Error';
 import * as methodOverride from 'method-override';
 const {server: {port}} = config;
 const {db_host, db_user, db_pass, db_port, db_name} = config.database;
@@ -28,9 +27,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(methodOverride());
-app.use((err, req, res, next) => {
-  handleError(err, req, res, next);
-});
 
 const cache = new Map<string, boolean>();
 

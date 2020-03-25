@@ -6,6 +6,12 @@ volumes:
     driver: local
 
 services:
+  app:
+    build: .
+    ports:
+      - "5006:5005"
+    depends_on:
+      - mongo
   mongo:
     image: mongo
     container_name: mongo

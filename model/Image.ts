@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, OneToMany, ObjectIdColumn} from 'typeorm';
+import {BaseEntity, Column, Entity, ObjectIdColumn} from 'typeorm';
 import {IGenericEntity} from './IGenericEntity';
 
 export interface IImage extends IGenericEntity<IImage> {
