@@ -1,11 +1,11 @@
-import ExpertController from '../controller/ExpertController';
+import ImageController from '../controller/ImageController';
 import {Application} from 'express';
 import {TypeORMCLient} from '../utils/sqldb/client';
 import {Image} from '../model';
 
 export default function (app: Application, db: TypeORMCLient<Image>, cache: Map<string, boolean>): any {
 
-  const expertController = new ExpertController(app, db, cache);
+  const expertController = new ImageController(app, db, cache);
 
   return [
     expertController.save('/image').then(item => item),
