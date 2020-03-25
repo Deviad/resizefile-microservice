@@ -1,7 +1,7 @@
 import * as express from 'express';
+import {Express} from 'express';
 import * as path from 'path';
 import * as busboy from 'connect-busboy';
-import {Express} from 'express';
 import * as morgan from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
@@ -12,6 +12,7 @@ import {TypeORMCLient} from './utils/sqldb/client';
 import {Image} from './model';
 import {MongoClient} from 'mongodb';
 import * as methodOverride from 'method-override';
+
 const {server: {port}} = config;
 const {db_host, db_user, db_pass, db_port, db_name} = config.database;
 let app: Express = express();
@@ -43,6 +44,12 @@ const cache = new Map<string, boolean>();
         {role: 'root', db: 'ownzones'}
       ],
     });
+  } else {
+    const results = await connection.db(db_name).collection('images').find().toArray();
+
+    results.forEach(x => cache.set(x.name, true));
+
+    console.log(results);
   }
 
   await connection.close();
