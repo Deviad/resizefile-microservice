@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, ObjectIdColumn} from 'typeorm';
+import {Column, Entity, Index, ObjectIdColumn} from 'typeorm';
 
 @Entity('images')
 export class Image {
