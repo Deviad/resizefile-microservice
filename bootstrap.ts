@@ -38,8 +38,8 @@ const cache = new Map<string, boolean>();
   if (!(dbList.databases as Array<any>).find(x => x.name === db_name)) {
     await connection.db(db_name).createCollection('images');
     await connection.db().admin().command({
-      updateUser: db_user,
-      // tslint:disable-next-line:object-literal-sort-keys
+      createUser: db_user,
+      pw: db_pass,
       roles: [
         {role: 'root', db: 'ownzones'}
       ],

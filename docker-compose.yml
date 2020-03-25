@@ -4,15 +4,21 @@ version: "3.3"
 volumes:
   mongo_data:
     driver: local
+  app_data:
+    driver: local
 
 services:
   app:
     build: .
     ports:
       - "5006:5005"
+    volumes:
+      - app_data:/usr/src/app/public
     depends_on:
-      - mongo
-  mongo:
+      - mongo-service
+    networks:
+      - ownzones_network
+  mongo-service:
     image: mongo
     container_name: mongo
     volumes:
@@ -23,14 +29,22 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - ownzones_network
   mongo-express:
     image: mongo-express
     container_name: mongo-express
     depends_on:
-      - mongo
+      - mongo-service
     restart: always
     ports:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    networks:
+      - ownzones_network
+networks:
+  ownzones_network:
+    driver: bridge
+

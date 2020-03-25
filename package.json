@@ -8,7 +8,7 @@
       "watch": "NODE_ENV=development nodemon -e ts -x ts-node bootstrap.ts",
       "watch:debug": "NODE_ENV=development nodemon -e ts -x ts-node --inspect-brk --no-cache bootstrap.ts",
       "start:dev": "ts-node --no-cache bootstrap.ts",
-      "start": "ts-node bootstrap.ts",
+      "start": "NODE_ENV=production ts-node bootstrap.ts",
       "start:staging": "NODE_ENV=staging ts-node bootstrap.ts"
    },
    "dependencies": {
