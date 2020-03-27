@@ -5,11 +5,11 @@
   "author": "deviad",
   "license": "MIT",
   "scripts": {
-    "watch": "NODE_ENV=development nodemon -e ts -x ts-node bootstrap.ts",
-    "watch:debug": "NODE_ENV=development nodemon -e ts -x ts-node --inspect-brk --no-cache bootstrap.ts",
-    "start:dev": "ts-node --no-cache bootstrap.ts",
-    "start": "NODE_ENV=production ts-node bootstrap.ts",
-    "start:staging": "NODE_ENV=staging ts-node bootstrap.ts",
+    "watch": "NODE_ENV=development nodemon -e ts -x ts-node src/bootstrap.ts",
+    "watch:debug": "NODE_ENV=development nodemon -e ts -x ts-node --inspect-brk --no-cache src/bootstrap.ts",
+    "start:dev": "ts-node src/bootstrap.ts",
+    "start": "NODE_ENV=production ts-node src/bootstrap.ts",
+    "start:staging": "NODE_ENV=staging ts-node src/bootstrap.ts",
     "test": "jest --detectOpenHandles --colors"
   },
   "jest": {
@@ -26,10 +26,8 @@
           "src/*/.{ts,tsx}",
           "!src/*/_data_//",
           "!src/*/store/actions/.{ts,tsx}",
-          "!src/index.tsx",
-          "!src/setupProxy.js",
-          "!**/types.ts",
-          "!**/types.tsx",
+          "!src/bootstrap.tsx",
+          "!/typings/*/.ts",
           "!**/react-app-env.d.ts"
         ]
       }

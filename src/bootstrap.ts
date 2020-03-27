@@ -26,13 +26,13 @@ if (process.env.NODE_ENV === 'development') {
 CacheProvider.getCache();
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cacheErrorHandler);
 app.use(cors());
 app.use(busboy());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(methodOverride());
+app.use(cacheErrorHandler);
 app.use(errorHandler);
 
 

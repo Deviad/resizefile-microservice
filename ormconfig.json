@@ -8,13 +8,13 @@
    "synchronize": true,
    "logging": false,
    "entities": [
-      "orm/entity/**/*.ts"
+      "src/orm/entity/**/*.ts"
    ],
    "migrations": [
-      "orm/migration/**/*.ts"
+      "src/orm/migration/**/*.ts"
    ],
    "subscribers": [
-      "orm/subscriber/**/*.ts"
+      "src/orm/subscriber/**/*.ts"
    ],
    "cli": {
       "entitiesDir": "src/entity",

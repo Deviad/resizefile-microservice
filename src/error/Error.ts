@@ -3,7 +3,7 @@ export class ApiError extends Error {
   public message: any;
 
   constructor(statusCode, message) {
-    super();
+    super(message);
     this.statusCode = statusCode;
     this.message = message;
   }
