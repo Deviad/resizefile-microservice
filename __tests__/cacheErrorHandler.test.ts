@@ -1,9 +1,11 @@
-import {cacheErrorHandler} from '../services/cacheErrorHandler';
+import * as errorHandlingFunctions from '../services/errorHandlingFunctions';
+import * as cacheErrorHandler from '../services/cacheErrorHandler';
 import {Request, Response} from 'express';
 
-jest.mock('../services/CacheProvider');
 
 import CacheProvider from '../services/CacheProvider';
+
+jest.mock('../services/CacheProvider');
 
 
 let mockInstance = null;
@@ -42,8 +44,10 @@ describe('When resize is called and an image is missing', () => {
     const cache = CacheProvider.getCache();
 
     cache.set(instance.req.query.name + instance.req.query.size, true);
-    cacheErrorHandler(instance.req as unknown as Request, instance.res as unknown as Response, instance.next);
+    jest.spyOn(errorHandlingFunctions, 'addErrorForExistingNameAndResolution');
+    cacheErrorHandler.cacheErrorHandler(instance.req as unknown as Request, instance.res as unknown as Response, instance.next);
     expect(getCache).toBeCalled();
+    expect(errorHandlingFunctions.addErrorForExistingNameAndResolution).toBeCalled();
     done();
   });
 });
