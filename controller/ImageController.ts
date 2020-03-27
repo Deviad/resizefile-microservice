@@ -1,11 +1,12 @@
 import {Application, Request, Response} from 'express';
 import {TypeORMCLient} from '../utils/sqldb/client';
 import {Image} from '../model';
-import {ApiError, wrapAsync} from '../error/Error';
-import * as fs from 'fs';
-
-import * as sharp from 'sharp';
-import * as path from 'path';
+import {ApiError} from '../error/Error';
+import {resizeImage} from '../services/resizeServices';
+import {saveIntoFolder} from '../services/fileServices';
+import {ImageControllerHandler} from '../services/ImageControllerHandler';
+import {wrapAsync} from '../services/asyncWrapper';
+import {CacheProvider} from '../services/CacheProvider';
 
 
 interface IExtendedRequest extends Request {
@@ -14,59 +15,12 @@ interface IExtendedRequest extends Request {
 
 class ImageController {
 
-  private _app: Application;
-  private _db: TypeORMCLient<Image>;
-  private _cache: Map<string, boolean>;
+  private readonly app: Application;
+  private readonly db: TypeORMCLient<Image>;
 
-  private static saveIntoFolder = (res, req) => new Promise((resolve, reject) => {
-    let fstream;
-    try {
-      req.pipe(req.busboy);
-      req.busboy.on('file', function (fieldname, file, filename) {
-        console.log('Uploading: ' + filename);
-        let imagePath = path.resolve(__dirname, '../public/imagestock/', filename);
-        fstream = fs.createWriteStream(imagePath);
-        file.pipe(fstream);
-        fstream.on('close', function () {
-          resolve();
-        });
-      });
-    } catch (err) {
-      reject();
-    }
-  });
-
-  private static calculateSize(sizes: string[]) {
-    const width = parseInt(sizes[0], 10);
-    const height = parseInt(sizes[1], 10);
-    return {width, height};
-  }
-
-  private static getCurrentExtension = (fileName: string) => {
-    let currentExtension;
-    const fileExtensions = ['jpg', 'jpeg', 'png'];
-    fileExtensions.forEach(x => {
-      if (fileName.endsWith(x)) {
-        currentExtension = x;
-      }
-    });
-    return currentExtension;
-  };
-
-  private static async resizeImage(req: Request) {
-    let imagePath = path.resolve(__dirname, '../public/imagestock/', req.query.name);
-    const sizes = req.query.size.split('x');
-    const {width, height} = ImageController.calculateSize(sizes);
-    const file = fs.readFileSync(imagePath);
-    const currentEtension = ImageController.getCurrentExtension(req.query.name);
-    const tPath = imagePath.split('.' + currentEtension)[0];
-    await sharp(file).resize(width, height).toFile(tPath + req.query.size + '.' + currentEtension);
-  }
-
-  constructor(app: Application, db: TypeORMCLient<Image>, cache: Map<string, boolean>) {
-    this._app = app;
-    this._db = db;
-    this._cache = cache;
+  constructor(app: Application, db: TypeORMCLient<Image>) {
+    this.app = app;
+    this.db = db;
   }
 
   public async get(...args: any[]) {
@@ -74,16 +28,13 @@ class ImageController {
   }
 
   public async save(endpoint: string): Promise<any> {
-    return this._app.route(endpoint).post(wrapAsync(async (req: IExtendedRequest, res: Response) => {
+    return this.app.route(endpoint).post(wrapAsync(async (req: IExtendedRequest, res: Response) => {
       try {
 
-        if (this._cache.get(req.query.name)) {
-          throw new ApiError(400, 'An image with this name already exists');
-        }
-
-        await ImageController.saveIntoFolder(res, req);
-        await this.createNewDbEntry(req.query.name);
-        this._cache.set(req.query.name, true);
+        await saveIntoFolder(res, req);
+        await ImageControllerHandler.createNewDbEntry(this.db, req.query.name);
+        const cache = CacheProvider.getCache();
+        cache.set(req.query.name, true);
         res.status(201).json({'status': 'success'});
       } catch (error) {
         const code = error.statusCode || 500;
@@ -93,32 +44,18 @@ class ImageController {
   }
 
   public async resize(endpoint: string): Promise<any> {
-    return this._app.route(endpoint).get(wrapAsync(async (req: Request, res: Response) => {
+    return this.app.route(endpoint).get(wrapAsync(async (req: Request, res: Response) => {
       try {
-        if (this._cache.get(req.query.name + req.query.size)) {
-          throw new ApiError(400, 'An image with this name and resolution already exists');
-        }
-
-        if (!this._cache.get(req.query.name)) {
-          throw new ApiError(400, 'Cannot resize an image which has not been uploaded');
-        }
-
-        await ImageController.resizeImage(req);
-        this.createNewDbEntry(req.query.name + req.query.size);
-        this._cache.set(req.query.name + req.query.size, true);
+        await resizeImage(req);
+        await ImageControllerHandler.createNewDbEntry(this.db, req.query.name + req.query.size);
+        const cache = CacheProvider.getCache();
+        cache.set(req.query.name + req.query.size, true);
         res.status(201).json({'status': 'success'});
       } catch (error) {
         const code = error.statusCode || 500;
         throw new ApiError(code, error);
       }
     }));
-  }
-
-  private async createNewDbEntry(name: string) {
-    const image = new Image();
-    image.timestamp = new Date(Date.now()).toISOString();
-    image.name = name;
-    await this._db.em.save(image);
   }
 }
 

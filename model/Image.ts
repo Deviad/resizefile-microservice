@@ -28,10 +28,10 @@ export class Image extends BaseEntity implements IImage {
   }
 
   public create(image: IImage) {
-    const _image = new Image();
-    _image.timestamp = image.timestamp;
-    _image.name = image.name;
-    return _image;
+    const imageEntity = new Image();
+    imageEntity.timestamp = image.timestamp;
+    imageEntity.name = image.name;
+    return imageEntity;
   }
 }
 
