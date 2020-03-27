@@ -18,7 +18,7 @@ import {errorHandler} from './services/errorHandler';
 
 const {server: {port}} = config;
 const {db_host, db_user, db_pass, db_port, db_name} = config.database;
-let app: Express = express();
+export let app: Express = express();
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));

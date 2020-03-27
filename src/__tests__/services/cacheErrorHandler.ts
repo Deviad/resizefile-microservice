@@ -1,11 +1,11 @@
-import * as errorHandlingFunctions from '../services/errorHandlingFunctions';
-import * as cacheErrorHandler from '../services/cacheErrorHandler';
+import * as errorHandlingFunctions from '../../services/errorHandlingFunctions';
+import * as cacheErrorHandler from '../../services/cacheErrorHandler';
 import {Request, Response} from 'express';
 
 
-import CacheProvider from '../services/CacheProvider';
+import CacheProvider from '../../services/CacheProvider';
 
-jest.mock('../services/CacheProvider');
+jest.mock('../../services/CacheProvider');
 
 
 let mockInstance = null;
