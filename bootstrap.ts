@@ -13,7 +13,7 @@ import {Image} from './model';
 import {MongoClient} from 'mongodb';
 import * as methodOverride from 'method-override';
 import {cacheErrorHandler} from './services/cacheErrorHandler';
-import {CacheProvider} from './services/CacheProvider';
+import CacheProvider from './services/CacheProvider';
 import {errorHandler} from './services/errorHandler';
 
 const {server: {port}} = config;

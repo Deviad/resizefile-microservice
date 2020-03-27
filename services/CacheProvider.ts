@@ -1,4 +1,4 @@
-export class CacheProvider {
+export default class CacheProvider {
 
   public static cacheInstance = null;
 

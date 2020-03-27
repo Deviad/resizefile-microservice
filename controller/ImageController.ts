@@ -6,7 +6,7 @@ import {resizeImage} from '../services/resizeServices';
 import {saveIntoFolder} from '../services/fileServices';
 import {ImageControllerHandler} from '../services/ImageControllerHandler';
 import {wrapAsync} from '../services/asyncWrapper';
-import {CacheProvider} from '../services/CacheProvider';
+import CacheProvider from '../services/CacheProvider';
 
 
 interface IExtendedRequest extends Request {
