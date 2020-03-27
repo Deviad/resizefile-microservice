@@ -15,23 +15,16 @@
   "jest": {
     "verbose": true,
     "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "testEnvironment": "node",
-        "coveragePathIgnorePatterns": [
-          "/node_modules/"
-        ],
-        "resetMocks": true,
-        "collectCoverageFrom": [
-          "src/*/.{ts,tsx}",
-          "!src/*/_data_//",
-          "!src/*/store/actions/.{ts,tsx}",
-          "!src/bootstrap.tsx",
-          "!/typings/*/.ts",
-          "!**/react-app-env.d.ts"
-        ]
-      }
-    }
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "resetMocks": true,
+    "collectCoverageFrom": [
+      "src/**/**/*.ts",
+      "!src/bootstrap.ts",
+      "!typings/**/*.ts"
+    ]
   },
   "dependencies": {
     "@types/connect-busboy": "^0.0.2",
