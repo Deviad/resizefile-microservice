@@ -9,7 +9,10 @@ export const getCurrentExtension = (fileName: string) => {
       currentExtension = x;
     }
   });
-  return currentExtension;
+  if (currentExtension) {
+    return currentExtension;
+  }
+  throw new Error('Wrong image format');
 };
 export const saveIntoFolder = (res, req) => new Promise((resolve, reject) => {
   let fstream;
