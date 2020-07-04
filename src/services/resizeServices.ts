@@ -1,6 +1,7 @@
 import {Request} from 'express';
 import * as path from 'path';
-import * as fs from 'fs';
+import {promises as fsPromises} from 'fs';
+
 import * as sharp from 'sharp';
 import {getCurrentExtension} from './fileServices';
 
@@ -14,7 +15,7 @@ export const resizeImage = async (req: Request) => {
   let imagePath = path.resolve(__dirname, '../public/imagestock/', req.query.name);
   const sizes = req.query.size.split('x');
   const {width, height} = calculateSize(sizes);
-  const file = fs.readFileSync(imagePath);
+  const file = await fsPromises.readFile(imagePath);
   const currentExtension = getCurrentExtension(req.query.name);
   const tPath = imagePath.split('.' + currentExtension)[0];
   await sharp(file).resize(width, height).toFile(tPath + req.query.size + '.' + currentExtension);
